@@ -7,11 +7,27 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/SurkovIlya/statistics-app/internal/orders"
 	"github.com/SurkovIlya/statistics-app/internal/server"
+	"github.com/SurkovIlya/statistics-app/pkg/postgres"
 )
 
 func main() {
-	srv := server.New("8080")
+	pgParams := postgres.DBParams{
+		Host:     "database",
+		Port:     "8080",
+		Username: os.Getenv("POSTGRES_USER"),
+		Password: os.Getenv("POSTGRES_PASSWORD"),
+		Database: os.Getenv("POSTGRES_DB"),
+	}
+	storage, err := postgres.Initialize(pgParams)
+	if err != nil {
+		panic(err)
+	}
+
+	om := orders.New(storage)
+
+	srv := server.New("8080", om)
 
 	go func() {
 		if err := srv.Run(); err != nil {

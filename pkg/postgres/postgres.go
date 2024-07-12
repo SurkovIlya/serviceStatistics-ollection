@@ -1,4 +1,4 @@
-package pg
+package postgres
 
 import (
 	"database/sql"
@@ -20,8 +20,9 @@ type DBParams struct {
 	Database string
 }
 
-func Initialize(params DBParams) (Database, error) {
-	db := Database{}
+func Initialize(params DBParams) (*Database, error) {
+	db := &Database{}
+
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		params.Host, params.Port, params.Username, params.Password, params.Database)
 	conn, err := sql.Open("postgres", dsn)
@@ -34,6 +35,8 @@ func Initialize(params DBParams) (Database, error) {
 	if err != nil {
 		return db, err
 	}
+
 	log.Println("Database connection established")
+
 	return db, nil
 }

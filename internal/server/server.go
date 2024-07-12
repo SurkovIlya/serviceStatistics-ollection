@@ -17,9 +17,10 @@ type OrdersStorage interface {
 
 type Server struct {
 	httpServer *http.Server
+	orders     OrdersStorage
 }
 
-func New(port string) *Server {
+func New(port string, orders OrdersStorage) *Server {
 	s := &Server{
 		httpServer: &http.Server{
 			Addr:           ":" + port,
@@ -28,6 +29,7 @@ func New(port string) *Server {
 			ReadTimeout:    10 * time.Second,
 			WriteTimeout:   10 * time.Second,
 		},
+		orders: orders,
 	}
 
 	return s
