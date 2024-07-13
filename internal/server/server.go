@@ -24,13 +24,14 @@ func New(port string, orders OrdersStorage) *Server {
 	s := &Server{
 		httpServer: &http.Server{
 			Addr:           ":" + port,
-			Handler:        initRoutes(),
 			MaxHeaderBytes: 1 << 20, // 1 MB
 			ReadTimeout:    10 * time.Second,
 			WriteTimeout:   10 * time.Second,
 		},
 		orders: orders,
 	}
+
+	s.initRoutes()
 
 	return s
 }
@@ -43,12 +44,12 @@ func (s *Server) Shutdown(ctx context.Context) error {
 	return s.httpServer.Shutdown(ctx)
 }
 
-func initRoutes() http.Handler {
+func (s *Server) initRoutes() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("POST /orderbook/get", GetOrderBook)
-	mux.HandleFunc("POST /orderbook/save", SaveOrderBook)
-	mux.HandleFunc("POST /orderhistory/get", GetOrderHistory)
-	mux.HandleFunc("POST /orderhistory/save", SaveOrderHistory)
+	mux.HandleFunc("POST /orderbook/get", s.GetOrderBook)
+	mux.HandleFunc("POST /orderbook/save", s.SaveOrderBook)
+	mux.HandleFunc("POST /orderhistory/get", s.GetOrderHistory)
+	mux.HandleFunc("POST /orderhistory/save", s.SaveOrderHistory)
 
-	return mux
+	s.httpServer.Handler = mux
 }
