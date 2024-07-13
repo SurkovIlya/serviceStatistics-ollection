@@ -1,2 +1,2 @@
-DROP TABLE IF EXISTS OrderBook;
-DROP TABLE IF EXISTS Order_History;
+DROP TABLE orderBook;
+DROP TABLE orderHistory;
