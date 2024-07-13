@@ -9,23 +9,26 @@ import (
 
 	"github.com/SurkovIlya/statistics-app/internal/orders"
 	"github.com/SurkovIlya/statistics-app/internal/server"
-	"github.com/SurkovIlya/statistics-app/pkg/postgres"
+	"github.com/SurkovIlya/statistics-app/internal/storage/pg"
+	postg "github.com/SurkovIlya/statistics-app/pkg/postgres"
 )
 
 func main() {
-	pgParams := postgres.DBParams{
-		Host:     "database",
-		Port:     "8080",
+	pgParams := postg.DBParams{
+		Host:     "db",
+		Port:     "5432",
 		Username: os.Getenv("POSTGRES_USER"),
 		Password: os.Getenv("POSTGRES_PASSWORD"),
 		Database: os.Getenv("POSTGRES_DB"),
 	}
-	storage, err := postgres.Initialize(pgParams)
+	storage, err := postg.Initialize(pgParams)
 	if err != nil {
 		panic(err)
 	}
 
-	om := orders.New(storage)
+	pgq := pg.New(storage)
+
+	om := orders.New(pgq)
 
 	srv := server.New("8080", om)
 
