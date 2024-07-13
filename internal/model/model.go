@@ -3,30 +3,34 @@ package model
 import "time"
 
 type DepthOrder struct {
-	Price   float64
-	BaseQty float64
+	Price   float64 `json:"price"`
+	BaseQty float64 `json:"base_qty"`
 }
 
-// TODO: добавить json теги
 type HistoryOrder struct {
-	Client_name           string
-	Exchange_name         string
-	Label                 string
-	Pair                  string
-	Side                  string
-	Type                  string
-	Base_qty              float64
-	Price                 float64
-	Algorithm_name_placed string
-	Lowest_sell_prc       float64
-	Highest_buy_prc       float64
-	Commission_quote_qty  float64
-	Time_placed           time.Time
+	ClientName          string    `json:"client_name"`
+	ExchangeName        string    `json:"exchange_name"`
+	Label               string    `json:"label"`
+	Pair                string    `json:"pair"`
+	Side                string    `json:"side"`
+	Type                string    `json:"type"`
+	BaseQty             float64   `json:"base_qty"`
+	Price               float64   `json:"price"`
+	AlgorithmNamePlaced string    `json:"algorithm_name_placed"`
+	LowestSellPrc       float64   `json:"lowest_sell_prc"`
+	HighestBuyPrc       float64   `json:"highest_buy_prc"`
+	CommissionQuoteQty  float64   `json:"commission_quote_qty"`
+	TimePlaced          time.Time `json:"time_placed"`
 }
 
 type Client struct {
-	Client_name   string
-	Exchange_name string
-	Label         string
-	Pair          string
+	ClientName   string `json:"client_name"`
+	ExchangeName string `json:"exchange_name"`
+	Label        string `json:"label"`
+	Pair         string `json:"pair"`
+}
+
+type OrderBook struct {
+	Asks *DepthOrder `json:"asks"`
+	Bids *DepthOrder `json:"bids"`
 }
