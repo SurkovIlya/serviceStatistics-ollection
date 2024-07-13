@@ -3,7 +3,6 @@ package pg
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 
 	"github.com/SurkovIlya/statistics-app/internal/model"
 	"github.com/SurkovIlya/statistics-app/pkg/postgres"
@@ -39,16 +38,16 @@ func (psq *PostgresStorage) SelectOrder(exchange_name, pair string) ([]*model.De
 
 		err := rows.Scan(&asksJSON, &bidsJSON)
 		if err != nil {
-			log.Printf("error scan rows: %s", err)
+			return nil, fmt.Errorf("error scan: %s", err)
 		}
 
 		err = json.Unmarshal(asksJSON.([]byte), &asks)
 		if err != nil {
-			log.Println(err)
+			return nil, fmt.Errorf("error Unmarshal asksJson: %s", err)
 		}
 		err = json.Unmarshal(bidsJSON.([]byte), &bids)
 		if err != nil {
-			log.Println(err)
+			return nil, fmt.Errorf("error Unmarshal bidsJson: %s", err)
 		}
 
 		res = append(res, asks, bids)
@@ -60,12 +59,18 @@ func (psq *PostgresStorage) SelectOrder(exchange_name, pair string) ([]*model.De
 func (psq *PostgresStorage) InsertOrderBook(exchange_name, pair string, orderBook []*model.DepthOrder) error {
 	query := `INSERT INTO order_book (exchange, pair, asks, bids) VALUES ($1, $2, $3, $4)`
 
-	asksJson, _ := json.Marshal(orderBook[0])
-	bidsJson, _ := json.Marshal(orderBook[1])
-
-	_, err := psq.storage.Conn.Exec(query, exchange_name, pair, asksJson, bidsJson)
+	asksJson, err := json.Marshal(orderBook[0])
 	if err != nil {
-		return fmt.Errorf("error insert order in table: %s", err)
+		return fmt.Errorf("error Marshal asksJson: %s", err)
+	}
+	bidsJson, err := json.Marshal(orderBook[1])
+	if err != nil {
+		return fmt.Errorf("error Marshal bidsJson: %s", err)
+	}
+
+	_, err = psq.storage.Conn.Exec(query, exchange_name, pair, asksJson, bidsJson)
+	if err != nil {
+		return fmt.Errorf("error insert: %s", err)
 	}
 
 	return nil
@@ -99,8 +104,9 @@ func (psq *PostgresStorage) SelectHistory(client *model.Client) ([]*model.Histor
 			&history.CommissionQuoteQty,
 			&history.TimePlaced)
 		if err != nil {
-			log.Printf("error scan row: %s", err)
+			return nil, fmt.Errorf("error scan: %s", err)
 		}
+
 		res = append(res, &history)
 	}
 
