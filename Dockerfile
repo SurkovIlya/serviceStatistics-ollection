@@ -10,7 +10,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o build/statistics-
 FROM alpine
 
 RUN apk add --no-cache ca-certificates && update-ca-certificates
-COPY --from=builder /go/src/github.com/SurkovIlya/statistics-app /usr/bin/statistics-app
+COPY --from=builder /go/src/github.com/SurkovIlya/statistics-app/build/statistics-app /usr/bin/statistics-app
 
 EXPOSE 8080 8080
 

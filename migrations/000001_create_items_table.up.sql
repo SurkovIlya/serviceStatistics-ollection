@@ -1,12 +1,4 @@
-CREATE TABLE IF NOT EXISTS OrderBook (
-    id SERIAL PRIMARY KEY,
-    exchange VARCHAR(255),
-    pair VARCHAR(255),
-    asks JSONB,
-    bids JSONB
-);
-
-CREATE TABLE IF NOT EXISTS Order_History (
+CREATE TABLE IF NOT EXISTS order_history (
     client_name VARCHAR(255),
     exchange_name VARCHAR(255),
     label VARCHAR(255),
@@ -20,4 +12,12 @@ CREATE TABLE IF NOT EXISTS Order_History (
     highest_buy_prc FLOAT,
     commission_quote_qty FLOAT,
     time_placed TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS order_book (
+    id SERIAL PRIMARY KEY,
+    exchange VARCHAR(255),
+    pair VARCHAR(255),
+    asks JSONB,
+    bids JSONB
 );
