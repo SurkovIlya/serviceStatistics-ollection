@@ -8,13 +8,13 @@ git clone github.com/SurkovIlya/statistics-app
 ```
 Copy the `env.example` file to a `.env` file.
 ```bash
-$ cp .env.example .env
+cp .env.example .env
 ```
 Update the postgres variables declared in the new `.env` to match your preference. 
 
 Build and start the services with:
 ```bash
-$ docker-compose up --build
+docker-compose up --build
 ```
 ### Statistic app API
 <details>
