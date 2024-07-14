@@ -25,8 +25,8 @@ func New(port string, orders OrdersStorage) *Server {
 		httpServer: &http.Server{
 			Addr:           ":" + port,
 			MaxHeaderBytes: 1 << 20, // 1 MB
-			ReadTimeout:    10 * time.Second,
-			WriteTimeout:   10 * time.Second,
+			ReadTimeout:    200 * time.Millisecond,
+			WriteTimeout:   200 * time.Millisecond,
 		},
 		orders: orders,
 	}
