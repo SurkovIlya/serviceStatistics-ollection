@@ -22,23 +22,21 @@ type DBParams struct {
 	Database string
 }
 
-func Initialize(params DBParams) (*Database, error) {
-	db := &Database{}
+func New(conn *sql.DB) *Database {
+	return &Database{
+		Conn: conn,
+	}
+}
 
+func Connect(params DBParams) (*sql.DB, error) {
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		params.Host, params.Port, params.Username, params.Password, params.Database)
 	conn, err := sql.Open("postgres", dsn)
 	if err != nil {
-		return db, err
-	}
-
-	db.Conn = conn
-	err = db.Conn.Ping()
-	if err != nil {
-		return db, err
+		return nil, err
 	}
 
 	log.Println("Database connection established")
 
-	return db, nil
+	return conn, nil
 }
