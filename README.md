@@ -1,4 +1,5 @@
 
+
 ### Requirements
 * Docker and Go
 ### Usage
@@ -133,3 +134,7 @@ docker-compose up --build
 "OK"
 ```
 </details>
+
+#### Load testing
+Testing was carried out on a computer with an "AMD Ryzen 5 5600H with Radeon Graphics" processor, processor frequency - 3.30 GHz, 1 core was used (runtime.GOMAXPROCS(1))
+![Test result](https://github.com/SurkovIlya/statistics-app/blob/main/loadTest.jpg)
