@@ -39,7 +39,7 @@ func (s *Server) GetOrderBook(w http.ResponseWriter, r *http.Request) {
 
 	res, err := s.orders.GetOrderBook(rp.ExchangeName, rp.Pair)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 
 		return
 	}
@@ -79,7 +79,7 @@ func (s *Server) SaveOrderBook(w http.ResponseWriter, r *http.Request) {
 
 	err = s.orders.SaveOrderBook(rp.ExchangeName, rp.Pair, book)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 
 		return
 	}

@@ -37,7 +37,7 @@ func (s *Server) GetOrderHistory(w http.ResponseWriter, r *http.Request) {
 
 	res, err := s.orders.GetOrderHistory(rp)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 
 		return
 	}
@@ -81,7 +81,7 @@ func (s *Server) SaveOrderHistory(w http.ResponseWriter, r *http.Request) {
 
 	err = s.orders.SaveOrder(client, rp)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 
 		return
 	}
