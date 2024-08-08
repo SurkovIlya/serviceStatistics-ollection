@@ -8,6 +8,15 @@ import (
 	"github.com/SurkovIlya/statistics-app/internal/model"
 )
 
+// @Summary Get order history
+// @Tags orderhistory
+// @Description get order history from DB
+// @ID get-orderhistory
+// @Accept  json
+// @Produce  json
+// @Param input body model.Client true "{"client_name": "John Doe", "exchange_name": "Example Exchange", "label": "Order123","pair": "BTC/USDT"}"
+// @Success 200 {object} []model.HistoryOrder "[{"client_name": "John Doe","exchange_name": "Example Exchange","label": "Order123","pair": "BTC/USDT",	"side": "Buy","type": "Limit","base_qty": 1.5,"price": 40000.25,"algorithm_name_placed": "AlgorithmXYZ","lowest_sell_prc": 40200.75,"highest_buy_prc": 39950.5,"commission_quote_qty": 2,"time_placed": "2022-01-15T10:30:00Z"}]"
+// @Router /orderhistory/get [post]
 func (s *Server) GetOrderHistory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -45,6 +54,15 @@ func (s *Server) GetOrderHistory(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
+// @Summary Save order history
+// @Tags orderhistory
+// @Description save order history in DB
+// @ID save-orderhistory
+// @Accept  json
+// @Produce  json
+// @Param input body model.HistoryOrder true "{"client_name": "John Doe","exchange_name": "Example Exchange","label": "Order123","pair": "BTC/USDT",	"side": "Buy","type": "Limit","base_qty": 1.5,"price": 40000.25,"algorithm_name_placed": "AlgorithmXYZ","lowest_sell_prc": 40200.75,"highest_buy_prc": 39950.5,"commission_quote_qty": 2,"time_placed": "2022-01-15T10:30:00Z"}"
+// @Success 200 {string} string "OK"
+// @Router /orderhistory/save [post]
 func (s *Server) SaveOrderHistory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
