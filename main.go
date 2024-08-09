@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	_ "github.com/SurkovIlya/statistics-app/docs"
 	"github.com/SurkovIlya/statistics-app/internal/orders"
 	"github.com/SurkovIlya/statistics-app/internal/server"
 	"github.com/SurkovIlya/statistics-app/internal/storage/pg"
@@ -15,6 +16,11 @@ import (
 
 const serverPort = "8080"
 
+// @title Statistics-App API
+// @version 1.0
+// @description API server statistics-App.
+// @host localhost:8080
+// @BasePath /
 func main() {
 	pgParams := st.DBParams{
 		Host:     os.Getenv("POSTGRES_HOST"),

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/SurkovIlya/statistics-app/internal/model"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type OrdersStorage interface {
@@ -50,6 +51,9 @@ func (s *Server) initRoutes() {
 	mux.HandleFunc("POST /orderbook/save", s.SaveOrderBook)
 	mux.HandleFunc("POST /orderhistory/get", s.GetOrderHistory)
 	mux.HandleFunc("POST /orderhistory/save", s.SaveOrderHistory)
+
+	mux.HandleFunc("/swagger/*", httpSwagger.WrapHandler)
+	// mux.HandleFunc("/swagger/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/swagger/doc.json")))
 
 	s.httpServer.Handler = mux
 }

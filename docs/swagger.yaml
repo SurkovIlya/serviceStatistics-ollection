@@ -1,0 +1,181 @@
+basePath: /
+definitions:
+  model.Client:
+    properties:
+      client_name:
+        type: string
+      exchange_name:
+        type: string
+      label:
+        type: string
+      pair:
+        type: string
+    type: object
+  model.DepthOrder:
+    properties:
+      base_qty:
+        type: number
+      price:
+        type: number
+    type: object
+  model.HistoryOrder:
+    properties:
+      algorithm_name_placed:
+        type: string
+      base_qty:
+        type: number
+      client_name:
+        type: string
+      commission_quote_qty:
+        type: number
+      exchange_name:
+        type: string
+      highest_buy_prc:
+        type: number
+      label:
+        type: string
+      lowest_sell_prc:
+        type: number
+      pair:
+        type: string
+      price:
+        type: number
+      side:
+        type: string
+      time_placed:
+        type: string
+      type:
+        type: string
+    type: object
+  model.OrderBook:
+    properties:
+      asks:
+        $ref: '#/definitions/model.DepthOrder'
+      bids:
+        $ref: '#/definitions/model.DepthOrder'
+    type: object
+  server.GetOrderReq:
+    properties:
+      exchange_name:
+        type: string
+      pair:
+        type: string
+    type: object
+  server.SaveOrderReq:
+    properties:
+      exchange_name:
+        type: string
+      order_book:
+        $ref: '#/definitions/model.OrderBook'
+      pair:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API server statistics-App.
+  title: Statistics-App API
+  version: "1.0"
+paths:
+  /orderbook/get:
+    post:
+      consumes:
+      - application/json
+      description: get orders from DB
+      operationId: get-orderbook
+      parameters:
+      - description: name of the exchange or and the designation of the trading pair
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/server.GetOrderReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '[{"price": 331.4,"base_qty": 3.66},{"price": 222.02,"base_qty":
+            5.66}]'
+          schema:
+            items:
+              $ref: '#/definitions/model.DepthOrder'
+            type: array
+      summary: Get order book
+      tags:
+      - orderbook
+  /orderbook/save:
+    post:
+      consumes:
+      - application/json
+      description: save orders in DB
+      operationId: save-orderbook
+      parameters:
+      - description: Save order book
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/server.SaveOrderReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Save order book
+      tags:
+      - orderbook
+  /orderhistory/get:
+    post:
+      consumes:
+      - application/json
+      description: get order history from DB
+      operationId: get-orderhistory
+      parameters:
+      - description: '{'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.Client'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "[{\"client_name\": \"John Doe\",\"exchange_name\": \"Example
+            Exchange\",\"label\": \"Order123\",\"pair\": \"BTC/USDT\",\t\"side\":
+            \"Buy\",\"type\": \"Limit\",\"base_qty\": 1.5,\"price\": 40000.25,\"algorithm_name_placed\":
+            \"AlgorithmXYZ\",\"lowest_sell_prc\": 40200.75,\"highest_buy_prc\": 39950.5,\"commission_quote_qty\":
+            2,\"time_placed\": \"2022-01-15T10:30:00Z\"}]"
+          schema:
+            items:
+              $ref: '#/definitions/model.HistoryOrder'
+            type: array
+      summary: Get order history
+      tags:
+      - orderhistory
+  /orderhistory/save:
+    post:
+      consumes:
+      - application/json
+      description: save order history in DB
+      operationId: save-orderhistory
+      parameters:
+      - description: '{'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.HistoryOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Save order history
+      tags:
+      - orderhistory
+swagger: "2.0"

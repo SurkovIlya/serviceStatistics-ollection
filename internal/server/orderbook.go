@@ -5,11 +5,21 @@ import (
 	"mime"
 	"net/http"
 
+	_ "github.com/SurkovIlya/statistics-app/docs"
 	"github.com/SurkovIlya/statistics-app/internal/model"
 )
 
 const maxOrdersInBook = 100
 
+// @Summary Get order book
+// @Tags orderbook
+// @Description get orders from DB
+// @ID get-orderbook
+// @Accept  json
+// @Produce  json
+// @Param input body GetOrderReq true "name of the exchange or and the designation of the trading pair"
+// @Success 200 {object} []model.DepthOrder "[{"price": 331.4,"base_qty": 3.66},{"price": 222.02,"base_qty": 5.66}]"
+// @Router /orderbook/get [post]
 func (s *Server) GetOrderBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -47,6 +57,15 @@ func (s *Server) GetOrderBook(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
+// @Summary Save order book
+// @Tags orderbook
+// @Description save orders in DB
+// @ID save-orderbook
+// @Accept  json
+// @Produce  json
+// @Param input body SaveOrderReq true "Save order book"
+// @Success 200 {string} string "OK"
+// @Router /orderbook/save [post]
 func (s *Server) SaveOrderBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
